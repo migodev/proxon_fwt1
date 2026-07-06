@@ -74,7 +74,7 @@
 			// OffsetTemperature is a signed value, so we need to convert it (there is no value for unpacking a signed short)
 			if($TargetTemperature[1] >= pow(2, 15)) $TargetTemperature[1] -= pow(2, 16);
 
-			$this->SetValue("TargetTemperature", $TargetTemperature[1]);
+			$this->SetValue("TargetTemperature", $TargetTemperature[1] / 10.0);
 			
 			// PTCRelease -> FC3, 302 Bitmask, INT16 (0 = Gesperrt, 1 = Freigegeben)
 			$Address = 302;
