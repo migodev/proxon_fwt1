@@ -5,7 +5,7 @@
 	"vendor": "Proxon",
 	"aliases": 
 	[
-		"Proxon FWT 1.0"
+		"Proxon FWT 1.0 Panel"
 	],
 	"parentRequirements": ["{E310B701-4AE7-458E-B618-EC13A1A6F6A8}"],
 	"childRequirements": [],

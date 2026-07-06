@@ -7,7 +7,7 @@
 			$this->RegisterPropertyInteger("ControlPanel", 1);
 			$this->RegisterPropertyInteger("Interval", 30);
 
-			$this->RegisterTimer("Poller", 0, "PROXON_RequestStatus(\$_IPS['TARGET']);");
+			$this->RegisterTimer("Poller", 0, "PROXON_FWT1_RequestStatus(\$_IPS['TARGET']);");
  
 		}
 
