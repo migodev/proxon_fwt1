@@ -44,12 +44,9 @@
 			$this->SetTimerInterval("Poller", $this->ReadPropertyInteger("Interval") * 1000);
 		}
 
-		public function RequestStatus(): void {
-			// We use "modulo 20" to target the HNBP, which has ControlPanel ID 20,
-			// but in the ModBus Address space comes always first, therefore Address + 0
-			
+		public function RequestStatus(): void {		
 			// CurrentTemperature -> FC3, 130 + X, INT16 (0.1 °C Resolution)
-			$Address = 150 + ($this->ReadPropertyInteger("ControlPanel") % 20);
+			$Address = 150 + ($this->ReadPropertyInteger("ControlPanel") - 1);
 			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
 			if($Data == false)
 				return;
@@ -61,7 +58,7 @@
 			// BaseTemperature -> FC3, 220 + X, INT16 (1.0 °C Resolution)
 			// Only for Panels > 1
 			if ($this->ReadPropertyInteger("ControlPanel") > 1) {
-				$Address = 220 + (($this->ReadPropertyInteger("ControlPanel")-1) % 20);
+				$Address = 220 + ($this->ReadPropertyInteger("ControlPanel")-1);
 				$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
 				if($Data == false)
 					return;
@@ -81,7 +78,7 @@
 			}
 
 			// TargetTemperature -> FC3, 180 + X, INT16 (1.0 °C Resolution)
-			$Address = 180 + ($this->ReadPropertyInteger("ControlPanel") % 20);
+			$Address = 180 + ($this->ReadPropertyInteger("ControlPanel") - 1);
 			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
 			if($Data == false)
 				return;
@@ -136,7 +133,7 @@
 			//}
 		
 			// OffsetTemperature -> FC6, 200 + X, INT16 (1.0 °C Resolution)
-			$Address = 200 + ($this->ReadPropertyInteger("ControlPanel") % 20);
+			$Address = 200 + ($this->ReadPropertyInteger("ControlPanel") - 1);
 			$Data = pack("n*", $OffsetTemperature);
 			$this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 6, "Address" => $Address , "Quantity" => 1, "Data" => bin2hex($Data))));
 
