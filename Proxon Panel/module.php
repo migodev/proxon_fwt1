@@ -64,11 +64,13 @@
 				// BaseTemperature is a signed value, so we need to convert it (there is no value for unpacking a signed short)
 				if($BaseTemperature[1] >= pow(2, 15)) $BaseTemperature[1] -= pow(2, 16);
 
-				// We want to store the BaseTemperature in a buffer, to use it for SetTemperature
-				$this->SetBuffer("BaseTemperature", $BaseTemperature[1] / 10.0);
+				$baseTemp = $BaseTemperature[1] / 10.0;
 
-				$minTemp = $BaseTemperature[1]-3;
-				$maxTemp = $BaseTemperature[1]+3;
+				// We want to store the BaseTemperature in a buffer, to use it for SetTemperature
+				$this->SetBuffer("BaseTemperature", $baseTemp);
+
+				$minTemp = $baseTemp-3;
+				$maxTemp = $baseTemp+3;
 				$id = $this->GetIDForIdent("TargetTemperature");
 				IPS_SetVariableCustomPresentation($id, ['PRESENTATION' => VARIABLE_PRESENTATION_SLIDER, "TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE, 'MIN' => $minTemp, 'MAX' => $maxTemp]);
 			}
