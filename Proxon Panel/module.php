@@ -129,19 +129,26 @@
 		}
 
 		public function SetPTC(bool $Release): void {
+			// PTCRelease -> FC3, 302 Bitmask, INT16 (0 = Gesperrt, 1 = Freigegeben)
+			$Address = 302;
+			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
+			if($Data == false)
+				return;
+			$Data = (unpack("n*", substr($Data,2)));
+			$decBitMask = $Data[1];
+		
 			// PTCRelease -> FC6, 302 INT16 (0 = Gesperrt, 1 = Freigegeben)
 			$Address = 302 + ($this->ReadPropertyInteger("ControlPanel") % 20);
-
 			//Create BitMask for Panel
 			$bit = 1 << ($this->ReadPropertyInteger("ControlPanel") - 1);
 
 			if ($Release) {
-				$in_value |= $bit;      // EIN
+				$decBitMask |= $bit;      // EIN
 			} else {
-				$in_value &= ~$bit;     // AUS
+				$decBitMask &= ~$bit;     // AUS
 			}
 
-			$Data = pack("n*", $in_value);
+			$Data = pack("n*", $decBitMask);
 			$this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 6, "Address" => $Address , "Quantity" => 1, "Data" => bin2hex($Data))));
 
 			$this->SetValue("PTCRelease", $Release);
