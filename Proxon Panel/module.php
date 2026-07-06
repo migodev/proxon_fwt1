@@ -23,7 +23,9 @@
 				"PRESENTATION" => VARIABLE_PRESENTATION_SLIDER,
 				"TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE,
 				"MIN" => 18,
-				"MAX" => 24
+				"MAX" => 24,
+				"STEP_SIZE" => 1,
+				"USAGE_TYPE" => 0
 			], 2);
 
 			$this->EnableAction("TargetTemperature");
@@ -72,7 +74,7 @@
 				$minTemp = $baseTemp-3;
 				$maxTemp = $baseTemp+3;
 				$id = $this->GetIDForIdent("TargetTemperature");
-				IPS_SetVariableCustomPresentation($id, ['PRESENTATION' => VARIABLE_PRESENTATION_SLIDER, "TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE, 'MIN' => $minTemp, 'MAX' => $maxTemp]);
+				IPS_SetVariableCustomPresentation($id, ['PRESENTATION' => VARIABLE_PRESENTATION_SLIDER, "TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE, 'MIN' => $minTemp, 'MAX' => $maxTemp, 'STEP_SIZE' => 1, "USAGE_TYPE" => 0]);
 			}
 
 			// TargetTemperature -> FC3, 180 + X, INT16 (1.0 °C Resolution)
