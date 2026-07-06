@@ -139,6 +139,9 @@
 			$Data = (unpack("n*", substr($Data,2)));
 			$decBitMask = $Data[1];
 		
+			// PTCRelease -> FC3, 301 Bitmask, INT16 (0 = Gesperrt, 1 = Freigegeben)
+			$Address = 301;
+
 			//Create BitMask for Panel
 			$bit = 1 << ($this->ReadPropertyInteger("ControlPanel") - 1);
 
