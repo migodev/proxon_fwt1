@@ -16,7 +16,7 @@
 		{
 			"type": "Button",
 			"caption": "Update Values",
-			"onClick": "PROXON_RequestStatus($id);"
+			"onClick": "PROXON_FWT1_RequestStatus($id);"
 		}
 	]
 }
