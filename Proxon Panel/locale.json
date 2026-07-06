@@ -1,0 +1,15 @@
+{
+    "translations": {
+        "de": { 
+            "Control Panel": "Bedienpanel",
+            "PTC Release": "PTC Freigabe",
+            "PTC Status": "PTC Status",
+            "Current Temperature": "Ist Temperatur",
+            "Target Temperature": "Soll Temperatur",
+            "Interval": "Intervall",
+            "Seconds": "Sekunden",
+            "Update Values": "Werte aktualisieren",
+            "A current value must be available before a new target temperature can be set.": "Ein aktueller Wert muss verfügbar sein, bevor eine neue Soll-Temperatur gesetzt werden kann."
+        }
+    }
+}
