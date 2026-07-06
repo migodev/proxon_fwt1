@@ -65,7 +65,7 @@
 				if($BaseTemperature[1] >= pow(2, 15)) $BaseTemperature[1] -= pow(2, 16);
 
 				// We want to store the BaseTemperature in a buffer, to use it for SetTemperature
-				$this->SetBuffer("BaseTemperature", $BaseTemperature[1]);
+				$this->SetBuffer("BaseTemperature", $BaseTemperature[1] / 10.0);
 
 				$minTemp = $BaseTemperature[1]-3;
 				$maxTemp = $BaseTemperature[1]+3;
