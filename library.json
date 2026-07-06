@@ -1,8 +1,11 @@
 {
 	"id": "{FDD7CBA8-1A6A-4FB8-B666-3E11F37A64EF}",
-	"author": "Symcon GmbH",
+	"author": "MiGo-IT-Service",
 	"name": "Proxon FWT1",
-	"url": "www.symcon.de",
+	"url": "https://www.migo-it-service.de",
+     "compatibility": {
+         "version": "8.0"
+     },
 	"version": "1.0",
 	"build": 0,
 	"date": 0

@@ -21,8 +21,11 @@
 			], 1);
 			$this->RegisterVariableInteger("TargetTemperature", $this->Translate("Target Temperature"), [
 				"PRESENTATION" => VARIABLE_PRESENTATION_SLIDER,
-				"TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE
+				"TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE,
+				"MINIMUM" => 18,
+				"MAXIMUM" => 24
 			], 2);
+
 			$this->EnableAction("TargetTemperature");
 			$this->RegisterVariableBoolean("PTCRelease", $this->Translate("PTC Release"), [
 				"PRESENTATION" => VARIABLE_PRESENTATION_SWITCH
@@ -63,6 +66,11 @@
 
 				// We want to store the BaseTemperature in a buffer, to use it for SetTemperature
 				$this->SetBuffer("BaseTemperature", $BaseTemperature[1]);
+
+				$minTemp = $BaseTemperature[1]-3;
+				$maxTemp = $BaseTemperature[1]+3;
+				$id = $this->GetIDForIdent("TargetTemperature");
+				IPS_SetVariablePresentation($id, VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE, ["minimumValue" => $minTemp, "maximumValue" => $maxTemp]);
 			}
 
 			// TargetTemperature -> FC3, 180 + X, INT16 (1.0 °C Resolution)
@@ -129,8 +137,6 @@
 		}
 
 		public function SetPTC(bool $Release): void {
-			//TODO ILLEGAL DATA ADRESS
-			####################################
 			// PTCRelease -> FC3, 302 Bitmask, INT16 (0 = Gesperrt, 1 = Freigegeben)
 			$Address = 302;
 			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
