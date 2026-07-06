@@ -70,7 +70,7 @@
 				$minTemp = $BaseTemperature[1]-3;
 				$maxTemp = $BaseTemperature[1]+3;
 				$id = $this->GetIDForIdent("TargetTemperature");
-				IPS_SetVariableCustomPresentation($id, ['PRESENTATION' => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE, "TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE, 'MIN' => $minTemp, 'MAX' => $maxTemp]);
+				IPS_SetVariableCustomPresentation($id, ['PRESENTATION' => VARIABLE_PRESENTATION_SLIDER, "TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE, 'MIN' => $minTemp, 'MAX' => $maxTemp]);
 			}
 
 			// TargetTemperature -> FC3, 180 + X, INT16 (1.0 °C Resolution)
