@@ -71,6 +71,8 @@
 				// We want to store the BaseTemperature in a buffer, to use it for SetTemperature
 				$this->SetBuffer("BaseTemperature", $baseTemp);
 
+				$this->SendDebug('base-temp', "read base temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$baseTemp, 0);
+
 				$minTemp = $baseTemp-3;
 				$maxTemp = $baseTemp+3;
 				$id = $this->GetIDForIdent("TargetTemperature");
@@ -138,6 +140,8 @@
 			$this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 6, "Address" => $Address , "Quantity" => 1, "Data" => bin2hex($Data))));
 
 			$this->SetValue("TargetTemperature", $Value);
+
+			$this->SendDebug('target-temp', "set target temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$Value, 0);
 		}
 
 		public function SetPTC(bool $Release): void {
