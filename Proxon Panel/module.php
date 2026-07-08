@@ -73,7 +73,7 @@
 
 				// Read last value of BaseTemperature
 				$oldBaseTemp = $this->ReadAttributeFloat('BaseTemperature');
-
+$oldBaseTemp = 5;
 				// Edit Presentation only on Change
 				if ($baseTemp != $oldBaseTemp) {
 					// We want to store the BaseTemperature in a attribute, to use it for SetTemperature / comparison
@@ -116,7 +116,7 @@
 			$bitCheck = ($decBitMask & $bitmask) !== 0;
 
 			$this->SetValue("PTCRelease", $bitCheck);	
-			$this->SendDebug('ptc-release', "Get Status for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$decBitMask." - ".$bitmask."", 0);
+			$this->SendDebug('ptc-release', "Get Status for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$decBitMask." - Bit: ".$bitmask."", 0);
 
 
 			// PTCStatus -> FC3, 300 Bitmask, INT16 (0 = Gesperrt, 1 = Freigegeben)
@@ -133,7 +133,7 @@
 			$bitCheck = ($decBitMask & $bitmask) !== 0;
 
 			$this->SetValue("PTCStatus", $bitCheck);	
-			$this->SendDebug('ptc-status', "Get Status for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$decBitMask." - ".$bitmask."", 0);
+			$this->SendDebug('ptc-status', "Get Status for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$decBitMask." - Bit: ".$bitmask."", 0);
 		}
 
 		public function SetTemperature(int $Value): void {
@@ -183,7 +183,7 @@
 			$this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 6, "Address" => $Address , "Quantity" => 1, "Data" => bin2hex($Data))));
 
 			$this->SetValue("PTCRelease", $Release);
-			$this->SendDebug('ptc-release', "Set Status for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$decBitMask." - ".$Release."", 0);
+			$this->SendDebug('ptc-release', "Set Status for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$decBitMask." - TargetState: ".json_encode($Release), 0);
 
 		}
 
