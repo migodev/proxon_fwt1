@@ -78,7 +78,6 @@
 				if ($baseTemp != $oldBaseTemp) {
 					// We want to store the BaseTemperature in a attribute, to use it for SetTemperature / comparison
 					$this->WriteAttributeFloat('BaseTemperature', $baseTemp);
-
 					$this->SendDebug('base-temp', "read base temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$baseTemp." Address: ".$Address." - Function: 3", 0);
 
 					$minTemp = $baseTemp-3;
@@ -86,7 +85,11 @@
 					$id = $this->GetIDForIdent("TargetTemperature");
 					IPS_SetVariableCustomPresentation($id, ['PRESENTATION' => VARIABLE_PRESENTATION_SLIDER, "TEMPLATE" => VARIABLE_TEMPLATE_SLIDER_ROOM_TEMPERATURE, 'MIN' => $minTemp, 'MAX' => $maxTemp, 'STEP_SIZE' => 1, "USAGE_TYPE" => 0, "GRADIENT_TYPE" => 1, "SUFFIX" => ' °C', 'ICON' => 'temperature-half']);
 					$this->SendDebug('presentation', "set new presentation values for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: Min: ".$minTemp." / Max: ".$maxTemp, 0);
+				} else {
+					$this->SendDebug('presentation', "Base Temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")." has not changed - skipping SetVariableCustomPresentation", 0);
 				}
+			} else {
+				$this->SendDebug('base-temp', "no base temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." available - skipping", 0);
 			}
 
 			// TargetTemperature -> FC3, 180 + X, INT16 (1.0 °C Resolution)
