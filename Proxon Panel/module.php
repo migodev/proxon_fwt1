@@ -98,7 +98,7 @@ $baseTemp = 5;
 				if ($baseTemp != $oldBaseTemp) {
 					// We want to store the BaseTemperature in a attribute, to use it for SetTemperature / comparison
 					$this->WriteAttributeFloat("BaseTemperature", $baseTemp);
-					$this->SendDebug("BaseTemperature", "read base temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$baseTemp." Address: ".$Address." - Function: 3", 0);
+					$this->SendDebug("BaseTemperature", "read base temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$baseTemp." - Function: 3", 0);
 
 					$minTemp = $baseTemp-3;
 					$maxTemp = $baseTemp+3;
