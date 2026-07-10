@@ -93,7 +93,7 @@
 
 				// Read last value of BaseTemperature
 				$oldBaseTemp = $this->ReadAttributeFloat("BaseTemperature");
-$oldBaseTemp = 5;
+
 				// Edit Presentation only on Change
 				if ($baseTemp != $oldBaseTemp) {
 					// We want to store the BaseTemperature in a attribute, to use it for SetTemperature / comparison
