@@ -85,31 +85,11 @@
 		public function RequestStatus(): void {		
 			// CurrentTemperature -> FC3, 150 + X, INT16 (0.1 °C Resolution)
 			$Data = $this->readTemperature(150, "CurrentTemperature", 10.0);
-			/*$Address = 150 + ($this->ReadPropertyInteger("ControlPanel") - 1);
-			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
-			if($Data == false)
-				return;
-			$Data = (unpack("n*", substr($Data,2)));
-			// CurrentTemperature is a signed value, so we need to convert it (there is no value for unpacking a signed short)
-			if($Data[1] >= pow(2, 15)) $Data[1] -= pow(2, 16);*/
-			
-			#$this->SetValue("CurrentTemperature", $Data / 10.0);
-			#$this->SendDebug("current-temp", "get current temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".($Data / 10.0)." Address: ".$Address." - Function: 3", 0);
 
 			// BaseTemperature -> FC3, 220 + X, INT16 (1.0 °C Resolution)
 			// Only for Panels > 1
 			if ($this->ReadPropertyInteger("ControlPanel") > 1) {
-				$baseTemp = $this->readTemperature(220, false, 10.0, 2);	
-				/*$Address = 220 + ($this->ReadPropertyInteger("ControlPanel") - 1);
-				$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
-				if($Data == false)
-					return;
-				$BaseTemperature = (unpack("n*", substr($Data,2)));
-				// BaseTemperature is a signed value, so we need to convert it (there is no value for unpacking a signed short)
-				if($BaseTemperature[1] >= pow(2, 15)) $BaseTemperature[1] -= pow(2, 16);
-
-				$baseTemp = $BaseTemperature[1] / 10.0;*/
-				
+				$baseTemp = $this->readTemperature(220, false, 10.0, 2);				
 
 				// Read last value of BaseTemperature
 				$oldBaseTemp = $this->ReadAttributeFloat("BaseTemperature");
@@ -132,9 +112,9 @@
 						"SUFFIX" => " °C", 
 						"ICON" => "temperature-half"
 					], 2);
-					$this->SendDebug("presentation", "set new presentation values for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: Min: ".$minTemp." / Max: ".$maxTemp, 0);
+					$this->SendDebug("presentation", "set new presentation for target-temp values for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: Min: ".$minTemp." / Max: ".$maxTemp, 0);
 				} else {
-					$this->SendDebug("presentation", "Base Temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")." has not changed - skipping SetVariableCustomPresentation", 0);
+					$this->SendDebug("presentation", "Base Temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")." has not changed - skipping CustomPresentation", 0);
 				}
 			} else {
 				$this->SendDebug("base-temp", "no base temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." available - skipping", 0);
@@ -142,53 +122,12 @@
 
 			// TargetTemperature -> FC3, 180 + X, INT16 (1.0 °C Resolution)
 			$this->readTemperature(180, "TargetTemperature", 10.0);
-			/*$Address = 180 + ($this->ReadPropertyInteger("ControlPanel") - 1);
-			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
-			if($Data == false)
-				return;
-			$TargetTemperature = (unpack("n*", substr($Data,2)));
-			// OffsetTemperature is a signed value, so we need to convert it (there is no value for unpacking a signed short)
-			if($TargetTemperature[1] >= pow(2, 15)) $TargetTemperature[1] -= pow(2, 16);
-
-			$this->SetValue("TargetTemperature", $TargetTemperature[1] / 10.0);
-			$this->SendDebug("target-temp", "get target temp for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".($TargetTemperature[1] / 10.0)." Address: ".$Address." - Function: 3", 0);*/
-			
-			
 
 			// PTCRelease -> FC3, 302 Bitmask, INT16 (0 = Gesperrt, 1 = Freigegeben)
 			$this->readAndCheckBitMask(302, "PTCRelease");
-			/*$Address = 302;
-			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
-			if($Data == false)
-				return;
-			$Data = (unpack("n*", substr($Data,2)));
-			$decBitMask = $Data[1];
-
-			//Create BitMask for Panel
-			$bitmask = 1 << ($this->ReadPropertyInteger("ControlPanel") - 1);
-			// Check if Bit is set
-			$bitCheck = ($decBitMask & $bitmask) !== 0;
-
-			$this->SetValue("PTCRelease", $bitCheck);	
-			$this->SendDebug("ptc-release", "Get Status for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$decBitMask." - Bit: ".$bitmask."", 0);*/
-
 
 			// PTCStatus -> FC3, 300 Bitmask, INT16 (0 = Gesperrt, 1 = Freigegeben)
 			$this->readAndCheckBitMask(300, "PTCStatus");
-			/*$Address = 300;
-			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
-			if($Data == false)
-				return;
-			$Data = (unpack("n*", substr($Data,2)));
-			$decBitMask = $Data[1];
-
-			//Create BitMask for Panel
-			$bitmask = 1 << ($this->ReadPropertyInteger("ControlPanel") - 1);
-			// Check if Bit is set
-			$bitCheck = ($decBitMask & $bitmask) !== 0;
-
-			$this->SetValue("PTCStatus", $bitCheck);	
-			$this->SendDebug("ptc-status", "Get Status for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".$decBitMask." - Bit: ".$bitmask."", 0);*/
 		}
 
 		public function SetTemperature(int $Value): void {
