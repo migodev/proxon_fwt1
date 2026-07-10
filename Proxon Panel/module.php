@@ -45,7 +45,7 @@
 			$this->SetTimerInterval("Poller", $this->ReadPropertyInteger("Interval") * 1000);
 		}
 
-		private function readTemperature(int $AddressBase, string $saveTo, float $format = 1, int $relation = 1) {
+		private function readTemperature(int $AddressBase, mixed $saveTo, float $format = 1, int $relation = 1) {
 			$Address = $AddressBase + ($this->ReadPropertyInteger("ControlPanel") - $relation);
 			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
 			if($Data == false)
