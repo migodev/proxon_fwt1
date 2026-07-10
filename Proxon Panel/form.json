@@ -16,7 +16,7 @@
 		{
 			"type": "Button",
 			"caption": "Update Values",
-			"onClick": "PROXONFWT1_RequestStatus($id);"
+			"onClick": "PXNFWT1_RequestStatus($id);"
 		}
 	]
 }
