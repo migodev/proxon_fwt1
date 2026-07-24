@@ -61,6 +61,7 @@
 		}
 
 		private function readAndUpdateTemperatureVariable(int $AddressBase, string $saveTo, float $format = 1, int $relation = 1) {
+			$Address = $AddressBase + ($this->ReadPropertyInteger("ControlPanel") - $relation);	
 			$finalValue = $this->readTemperature($AddressBase, $format, $relation);
 			if ($finalValue) {
 				$this->SetValue($saveTo, $finalValue);
