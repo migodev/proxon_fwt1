@@ -45,7 +45,7 @@
 			$this->SetTimerInterval("Poller", $this->ReadPropertyInteger("Interval") * 1000);
 		}
 
-		private function readTemperature(int $AddressBase, mixed $saveTo, float $format = 1, int $relation = 1) {
+		private function readTemperature(int $AddressBase, float $format = 1, int $relation = 1) {
 			$Address = $AddressBase + ($this->ReadPropertyInteger("ControlPanel") - $relation);
 			$Data = $this->SendDataToParent(json_encode(Array("DataID" => "{E310B701-4AE7-458E-B618-EC13A1A6F6A8}", "Function" => 3, "Address" => $Address , "Quantity" => 1, "Data" => "")));
 			if($Data == false)
@@ -55,15 +55,19 @@
 			if($Data[1] >= pow(2, 15)) $Data[1] -= pow(2, 16);
 
 			$finalValue = $Data[1]/ $format;
-
-			if ($saveTo !== false) {
-				$this->SetValue($saveTo, $finalValue);
-				$this->SendDebug($saveTo, "get temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".($finalValue)." Address: ".$Address." - Function: 3", 0);
-			} else {
-				$this->SendDebug($Address."-read", "get temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".($finalValue)." Address: ".$Address." - Function: 3", 0);
-			}
+			$this->SendDebug($Address."-read", "get temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".($finalValue)." Address: ".$Address." - Function: 3", 0);
 			
 			return $finalValue;
+		}
+
+		private function readAndUpdateTemperatureVariable(int $AddressBase, string $saveTo, float $format = 1, int $relation = 1) {
+			$finalValue = $this->readTemperature($AddressBase, $format, $relation);
+			if ($finalValue) {
+				$this->SetValue($saveTo, $finalValue);
+				$this->SendDebug($saveTo, "update temperature Variable for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".($finalValue)." Address: ".$Address." - Function: 3", 0);
+			} else {
+				$this->SendDebug($saveTo, "ERROR Reading temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")." Address: ".$Address." - Function: 3", 0);
+			}
 		}
 
 		private function readAndCheckBitMask(int $Address, string $saveTo): void {
@@ -84,12 +88,12 @@
 
 		public function RequestStatus(): void {		
 			// CurrentTemperature -> FC3, 150 + X, INT16 (0.1 °C Resolution)
-			$Data = $this->readTemperature(150, "CurrentTemperature", 10.0);
+			$Data = $this->readAndUpdateTemperatureVariable(150, "CurrentTemperature", 10.0);
 
 			// BaseTemperature -> FC3, 220 + X, INT16 (1.0 °C Resolution)
 			// Only for Panels > 1
 			if ($this->ReadPropertyInteger("ControlPanel") > 1) {
-				$baseTemp = $this->readTemperature(220, false, 10.0, 2);				
+				$baseTemp = $this->readTemperature(220, 10.0, 2);				
 
 				// Read last value of BaseTemperature
 				$oldBaseTemp = $this->ReadAttributeFloat("BaseTemperature");
@@ -121,7 +125,7 @@
 			}
 
 			// TargetTemperature -> FC3, 180 + X, INT16 (1.0 °C Resolution)
-			$this->readTemperature(180, "TargetTemperature", 10.0);
+			$this->readAndUpdateTemperatureVariable(180, "TargetTemperature", 10.0);
 
 			// PTCRelease -> FC3, 302 Bitmask, INT16 (0 = Gesperrt, 1 = Freigegeben)
 			$this->readAndCheckBitMask(302, "PTCRelease");
