@@ -1,4 +1,4 @@
-# Pulszähler
+# PROXON FWT 1
 Das Modul ermöglicht es, eine Einzelraumsteuerung einer Zimmermann PROXON FrischluftWärmetechnik Anlage 1.0 via Modbus TCP zu implementieren
 
 ### Inhaltsverzeichnis
