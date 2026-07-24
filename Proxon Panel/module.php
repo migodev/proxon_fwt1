@@ -61,13 +61,12 @@
 		}
 
 		private function readAndUpdateTemperatureVariable(int $AddressBase, string $saveTo, float $format = 1, int $relation = 1) {
-			$Address = $AddressBase + ($this->ReadPropertyInteger("ControlPanel") - $relation);	
 			$finalValue = $this->readTemperature($AddressBase, $format, $relation);
 			if ($finalValue) {
 				$this->SetValue($saveTo, $finalValue);
-				$this->SendDebug($saveTo, "update temperature Variable for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".($finalValue)." Address: ".$Address." - Function: 3", 0);
+				$this->SendDebug($saveTo, "update temperature Variable for Panel ".$this->ReadPropertyInteger("ControlPanel")." with value: ".($finalValue)."", 0);
 			} else {
-				$this->SendDebug($saveTo, "ERROR Reading temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")." Address: ".$Address." - Function: 3", 0);
+				$this->SendDebug($saveTo, "ERROR Reading temperature for Panel ".$this->ReadPropertyInteger("ControlPanel")."", 0);
 			}
 		}
 
